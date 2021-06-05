@@ -3,9 +3,12 @@ const express = require('express');
 const app = express();
 const port = process.env.port;
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser())
+
 // Parse request body
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
 Connect to the database.
@@ -21,6 +24,8 @@ const signMeInRouter = require('./auth/authentication/AuthenticationRouter');
 app.use('/signMeIn', signMeInRouter);
 
 // Authentication filter
+const authenticationFilter = require('./auth/authentication/AuthenticationFilter');
+app.use(authenticationFilter);
 
 // Authorization filter.
 
@@ -30,9 +35,9 @@ app.get("/home", function(req, res) {
 
 let userService = require("./auth/db/service/UserService");
 // userService.save({
-//     name: "kuru",
-//     password : "passwordww",
-//     email : "kuru"
+//     name: "test11",
+//     password : "testtesttest",
+//     email : "kurahulasingam.tharsanan@enactor.co.uk"
 //   })
 //   .then(function(result) {
 //     console.log("Saved....");

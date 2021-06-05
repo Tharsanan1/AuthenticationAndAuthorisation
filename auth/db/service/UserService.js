@@ -82,7 +82,6 @@ const findUserByEmail = function(email) {
     })
 }
 
-const shasum = crypto.createHash('sha512');
 const digest = 'hex';
 
 /**
@@ -94,6 +93,7 @@ function hashPassword(user) {
         throw new Error("Password does not meet required constraints.")
     }
     let salt = cryptoRandomString({length: saltLength});
+    const shasum = crypto.createHash('sha512');
     shasum.update(passwordPlainString + salt);
     let hashedPassword = shasum.digest(digest);
     return {
@@ -109,6 +109,7 @@ let isCorrectPassword = function (user, plainPassword) {
     if (!user.salt) {
         throw new Error("User salt is empty");
     }
+    const shasum = crypto.createHash('sha512');
     shasum.update(plainPassword + user.salt);
     let hashedPassword = shasum.digest(digest);
     if (hashedPassword === user.password) {
